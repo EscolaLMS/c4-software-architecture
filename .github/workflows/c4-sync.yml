@@ -8,6 +8,7 @@ on:
 jobs:
   c4-publish:
     runs-on: ubuntu-latest
+    working-directory: /usr/local/structurizr/
     env:
       workspaceId: 75191
       apiKey: ${{ secrets.apiKey }}
@@ -22,7 +23,7 @@ jobs:
           fetch-depth: 1
 
       - name: ls
-        run: ls
+        run: ls /usr/local/structurizr/
 
       - name: Publish to cloud
         run: push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
