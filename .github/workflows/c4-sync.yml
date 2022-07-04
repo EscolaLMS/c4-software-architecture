@@ -8,7 +8,12 @@ on:
 jobs:
   c4-publish:
     runs-on: ubuntu-latest
-    working-directory: /usr/local/structurizr/
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: /usr/local/structurizr/
+
     env:
       workspaceId: 75191
       apiKey: ${{ secrets.apiKey }}
