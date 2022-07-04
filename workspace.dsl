@@ -5,30 +5,138 @@ workspace {
         tutor = person "Tutor/Content Author" "A user of my software system."
         admin = person "Admin" "A user of my software system."
         
-        api = softwareSystem "REST API" {
+        rest_api = softwareSystem "REST API" {
             database = container "Database" "persistent database information (for example, users, payments, orders, courses, topics,  other metadata)"
+            redis = container "Queue and cache" "queue and cache for data"
+            noSql = container "logs" "logs for endpoints"
+            nodejs = container "Microservice" "microservice for endpoints logis"
+            ffmpeg = container "Video transcoder" "video transcoder"
+            mjml = container "framework that makes responsive email easy"
 
-            backend_app = container "API Application" "Provides All LMS functionality headlessly via a JSON/HTTPS REST API." "Laravel MVC" {
-                    core = component "Core" "Allows ...." "Laravel Package"
+            backend_app = container "API Application" "Provides All LMS functionality headlessly via a JSON/HTTPS REST API." "Laravel MVC" {  
+                core = component "Core" "Laravel Package" "Core"
+                api = component "Api" "Laravel Package" "API Laravel REST API. Main module that compose all Laravel packages"
+                auth = component "Auth" "Laravel Package" "Auth. User authentication. Roles & Permission Management"
+                assign_without_account = component "Assign-without-account" "Laravel Package" "Package enabling accessing courses and products without having account."
+                cart = component "Cart" "Laravel Package" "Cart. General shop management."
+                categories = component "Categories" "Laravel Package" "Categories"
+                consultations = component "Consultations" "Laravel Package" "Consultations. One to one conversation package with `jitsi`"
+                courses = component "Courses" "Laravel Package" "Courses. and content package"
+                courses_import_export = component "Courses-import-export" "Laravel Package" "Courses Import Export. ZIP package and duplicate feature."
+                csv_users = component "Csv-users" "Laravel Package" "CSV-Users. Exporting and importing users in `.csv` format"
+                fakturownia = component "Fakturownia" "Laravel Package" "Fakturownia-Integration. Generates Invoice from Fakturowania"
+                files = component "Files" "Laravel Package" "Files. Uploading, deleting and reusing files."
+                h5p = component "H5p" "Laravel Package" "H5P Headless."
+                images = component "Images" "Laravel Package" "Images. Responsive and compressions processing module"
+                invoices = component "Invoices" "Laravel Package" "Invoices generation."
+                jitsi = component "Jitsi" "Laravel Package" "Jitsi."
+                docker = component "Docker" "Laravel Package" "Docker Images."
+                lrs = component "Lrs" "Laravel Package" "LRS xAPI Learning Record Stores"
+                mailerlite = component "Mailerlite" "Laravel Package" "MailerLite. Customized group for LMS events"
+                mattermost = component "Mattermost" "Laravel Package" "Mattermost."
+                model_fields = component "Model-fields" "Laravel Package" "Model Fields. Extra attributes to any model"
+                notifications = component "Notifications" "Laravel Package" "Notifications."
+                pages = component "Pages" "Laravel Package" "Pages. Simple CMS."
+                payments = component "Payments" "Laravel Package" "Payments. Facades that allows to connect payment gateways"
+                permissions = component "Permissions" "Laravel Package" "Permissions and Roles."
+                questionnaire = component "Questionnaire" "Laravel Package" "Questionnaire. Answers & Reports"
+                reports = component "Reports" "Laravel Package" "Reports. Courses reports."
+                scorm = component "Scorm" "Laravel Package" "Scorm. Attach Scorm packages to courses"
+                settings = component "Settings" "Laravel Package" "Settings. Additional global fields of various types and other package setup"
+                stationary_events = component "Stationary-events" "Laravel Package" "Stationary Events."
+                tags = component "Tags" "Laravel Package" "Tags. Tagging for any Module"
+                templates = component "Templates" "Laravel Package" "Templates."
+                templates_certificates = component "Templates-certificates" "Laravel Package" "Templates-Certificates. Editing certificate templates"
+                templates_email = component "Templates-email" "Laravel Package" "Templates-Email. Notification management with custom mjml templates."
+                templates_pdf = component "Templates-pdf" "Laravel Package" "Templates-PDF. Templates in fabric.js frontend rendering format."
+                templates_sms = component "Templates-sms" "Laravel Package" "Templates-SMS. Notification management with custom templates"
+                topic_types = component "Topic-types" "Laravel Package" "Topic Types. List of possible Topic Types for Course content"
+                tracker = component "Tracker" "Laravel Package" "Tracker."
+                translations = component "Translations" "Laravel Package" "Translations. (not implemented)"
+                video = component "Video" "Laravel Package" "Video Processing. Generation `hls` streaming formats"
+                vouchers = component "Vouchers" "Laravel Package" "Vouchers. E-commerce vouchers to manage cart promotion"
+                webinar = component "Webinar" "Laravel Package" "Webinar. Live video stream with `Jitsi` and `YouTube`"
+                youtube = component "Youtube" "Laravel Package" "Youtube. Package Youtube integration"              
                    
-                }
+            }
         }
-        admin_panel = softwareSystem "Admin Panel" 
-        front = softwareSystem "Web App" 
+
+        
+
+        admin_panel = softwareSystem "Admin Panel" "Administration and course authoring panel" {
+            admin_web_app = container "Admin Web App" "React Admin Panel" {
+                admin_users = component "Users" "User management. Students, Tutors, Content Creators and Admins."
+
+                admin_user_groups = component "User Groups " "User management. Creating of unlimited user groups to assign courses, webinars and other events access"
+
+                admin_orders = component "Orders" "List of orders and their details"
+
+                admin_payments = component "Payments" "List of orders and their details"
+
+                admin_courses = component "Courses" "Courses management. courses attributes management, program creation - content authoring, import / export, products details, certifications, tags & categories, Questionaries, Statistics, Users/User Group access"
+
+                admin_h5p = component "H5Ps" "H5P Management. Upload Export Content authoring"
+
+                admin_scorm = component "SCORMs" "SCORM packages management"
+
+                admin_consultations = component "Consultations" "One to one conversation management. Used to create jitsi meetings"
+
+                admin_stationary_events = component "Stationary Events" "Manage stationary events."
+
+                admin_products = component "Products" "Simple shop management , Product attributes, Pricing with Taxes, Creating single or bulk products, Promotions management, Users/User Group access, Product limitations"
+
+                admin_webinars = component "Webinars" "Live Video Stream Management."
+
+                admin_templates = component "Templates" "Management of various templates in database and assigning them to Events so that content based on these templates is automatically generated and/or sent to users. Supported channels: email,  push, sms, pdf (certificates)"
+
+                admin_files = component "Files" "Files management. Reusable files."
+
+                admin_categories = component "Categories" "General categories management."
+
+                admin_settings = component "Settings." "management of application config keys for each package, unlimited creation of bespoke variables (text, boolean, image, json, file) consumed by frontend"
+
+                admin_roles = component "Roles" "User roles and permissions (in admin panel)"
+
+                admin_notifications = component "Notifications" "List of currently logged admin notification (system events) Management of users notification (system events)"
+
+                admin_questionnaires = component "Questionnaires" "Management of Questionnaire that can be attached to courses. questions management, answer statistics"
+
+                admin_vouchers = component "Vouchers" "Definition of Coupons that can be applied to User Cart before placing an Order, calculating a discount depending on multiple different, configurable rules."
+
+                admin_reports = component "Reports" "List of LMS reports Courses money spent metric, Courses popularity metric, Courses seconds spent metric, Tutors popularity metric"
+
+                admin_logs = component "Logs" "Audit Log. Tracking users API calls."
+            }
+        }
+
+        sdk = softwareSystem "SDK" "Wellms Software Development Kit" {
+            sdk_web = container "SDK Web App" "React SDK" 
+            docker_images = container "Docker Images" "Docker Images"
+
+        }
+
+        front = softwareSystem "Web App" "Wellms Front Course Access App" {
+            mobile_app = container "Native/Hybrid Mobile Application"
+            front_web_app = container "Front Admin Panel" {
+
+            }
+        }
 
         student -> front "Access courses"
         admin -> admin_panel "Administer"
         tutor -> admin_panel "Manage courses"
         tutor -> front "Communicates with students"
-        admin_panel -> api "Communicates"
-        front -> api "Communicates"
+        admin_panel -> rest_api "Communicates"
+        front -> rest_api "Communicates"
+
+        admin_web_app -> sdk "package json dependecy"
+        front_web_app -> sdk "package json dependecy"
 
     }
 
     views {
         styles {
             element "Person" {
-                color #ffffff
                 fontSize 22
                 shape Person
             }

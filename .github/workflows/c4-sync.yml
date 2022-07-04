@@ -9,11 +9,6 @@ jobs:
   c4-publish:
     runs-on: ubuntu-latest
 
-    # defaults:
-    #   run:
-    #     shell: bash
-    #     working-directory: /usr/local/structurizr/
-
     env:
       workspaceId: 75191
       apiKey: ${{ secrets.apiKey }}
@@ -26,9 +21,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-
-      - name: ls
-        run: ls /usr/local/structurizr/
 
       - name: Publish to cloud
         run: java -cp /usr/local/structurizr-cli:/usr/local/structurizr-cli/lib/* com.structurizr.cli.StructurizrCliApplication push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
