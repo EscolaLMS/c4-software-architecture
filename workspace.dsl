@@ -9,13 +9,23 @@ workspace {
             database = container "Database" "persistent database information (for example, users, payments, orders, courses, topics,  other metadata)"
             redis = container "Queue and cache" "queue and cache for data"
             noSql = container "logs" "logs for endpoints"
-            nodejs = container "Microservice" "microservice for endpoints logis"
+            nodejs = container "Microservice" "microservice for endpoints logis" {
+                mjml = component "framework that makes responsive email easy"
+            }
             ffmpeg = container "Video transcoder" "video transcoder"
-            mjml = container "framework that makes responsive email easy"
+            
+            mail = container "Mailer" "mailer for sending emails"
+            storage = container "Storage" "storage for files"
+            image_processing = container "Image processing optimizers" "JpegOptim, Optipng, Pngquant 2, SVGO 1, Gifsicle, cwebp"
+            trax = container "LRS" "learning record store"
+            payment_gateway = container "Payment gateway" "payment gateway" {
+                stripe = component "Stripe" "Stripe payments"
+                p24 = component "Przelewy24" "Przelewy24 payments"
+            }
+            youtube_api = container "Youtube API" "youtube API"
 
             backend_app = container "API Application" "Provides All LMS functionality headlessly via a JSON/HTTPS REST API." "Laravel MVC" {  
                 core = component "Core" "Laravel Package" "Core"
-                api = component "Api" "Laravel Package" "API Laravel REST API. Main module that compose all Laravel packages"
                 auth = component "Auth" "Laravel Package" "Auth. User authentication. Roles & Permission Management"
                 assign_without_account = component "Assign-without-account" "Laravel Package" "Package enabling accessing courses and products without having account."
                 cart = component "Cart" "Laravel Package" "Cart. General shop management."
@@ -58,7 +68,84 @@ workspace {
                 webinar = component "Webinar" "Laravel Package" "Webinar. Live video stream with `Jitsi` and `YouTube`"
                 youtube = component "Youtube" "Laravel Package" "Youtube. Package Youtube integration"              
                    
+                vouchers -> cart "relates on"
+                payments -> cart "relates on"   
+                assign_without_account -> cart "relates on"   
+
+                courses_import_export -> courses "relates on"   
+                topic_types -> courses "relates on"   
+                questionnaire -> courses "relates on"   
+
+                video -> topic_types "relates on"   
+                scorm -> topic_types "relates on"
+
+                assign_without_account -> courses "relates on" 
+
+                reports -> courses "relates on"   
+                reports -> cart "relates on"  
+
+                permissions -> auth  "relates on"
+                csv_users -> auth "relates on"
+
+                jitsi -> webinar "relates on"
+
+                templates_certificates -> templates "relates on"
+                templates_email -> templates "relates on"
+                templates_pdf -> templates "relates on"
+                templates_sms -> templates "relates on"
+
+                mailerlite -> templates_email "relates on"
+
+
+                auth -> core "Core Dependecy"
+                assign_without_account  -> core "Core Dependecy"
+                cart -> core "Core Dependecy"
+                categories -> core "Core Dependecy"
+                consultations -> core "Core Dependecy"
+                courses -> core "Core Dependecy"
+                courses_import_export -> core "Core Dependecy"
+                csv_users -> core "Core Dependecy"
+                fakturownia -> core "Core Dependecy"
+                files -> core "Core Dependecy"
+                h5p -> core "Core Dependecy"
+                images -> core "Core Dependecy"
+                invoices -> core "Core Dependecy"
+                jitsi -> core "Core Dependecy"
+                docker -> core "Core Dependecy"
+                lrs -> core "Core Dependecy"
+                mailerlite -> core "Core Dependecy"
+                mattermost -> core "Core Dependecy"
+                model_fields -> core "Core Dependecy"
+                notifications -> core "Core Dependecy"
+                pages -> core "Core Dependecy"
+                payments -> core "Core Dependecy"
+                permissions -> core "Core Dependecy"
+                questionnaire -> core "Core Dependecy"
+                reports -> core "Core Dependecy"
+                scorm -> core "Core Dependecy"
+                settings -> core "Core Dependecy"
+                stationary_events -> core "Core Dependecy"
+                tags -> core "Core Dependecy"
+                templates -> core "Core Dependecy"
+                templates_certificates -> core "Core Dependecy"
+                templates_email  -> core "Core Dependecy"
+                templates_pdf -> core "Core Dependecy"
+                templates_sms -> core "Core Dependecy"
+                topic_types -> core "Core Dependecy"
+                tracker -> core "Core Dependecy"
+                translations -> core "Core Dependecy"
+                video -> core "Core Dependecy"
+                vouchers -> core "Core Dependecy"
+                webinar -> core "Core Dependecy"
+                youtube -> core "Core Dependecy"
+
             }
+
+            images -> image_processing "use binary tools"
+            video -> ffmpeg "use binary tools"
+            webinar -> youtube_api "publish on youtube"
+            webinar -> jitsi "generate rooms thought API"
+            consultations -> jitsi "generate one-to-one jitsi URLs"
         }
 
         
@@ -112,14 +199,17 @@ workspace {
         sdk = softwareSystem "SDK" "Wellms Software Development Kit" {
             sdk_web = container "SDK Web App" "React SDK" 
             docker_images = container "Docker Images" "Docker Images"
+            components = container "Components" "Components"
+            fabric_js = container "Fabric JS" "Fabric JS"
+            h5p_player = container "H5P Player" "H5P Player"
+            cli = container "Command Line Interface" "Command Line Interface"
+            front_demo = container "Frontend Demo" "Frontend Demo availabe to be extends into bespoke web app"
 
         }
 
         front = softwareSystem "Web App" "Wellms Front Course Access App" {
             mobile_app = container "Native/Hybrid Mobile Application"
-            front_web_app = container "Front Admin Panel" {
-
-            }
+            front_web_app = container "Front Admin Panel" 
         }
 
         student -> front "Access courses"
@@ -129,12 +219,20 @@ workspace {
         admin_panel -> rest_api "Communicates"
         front -> rest_api "Communicates"
 
-        admin_web_app -> sdk "package json dependecy"
-        front_web_app -> sdk "package json dependecy"
+        mobile_app -> rest_api "Communicates"
+        front_web_app -> rest_api "Communicates"
+
+        admin_web_app -> sdk_web "package json dependecy"
+        front_web_app -> sdk_web "package json dependecy"
+        front_web_app -> components "package json dependecy"
+
+        
 
     }
 
     views {
+               
+        
         styles {
             element "Person" {
                 fontSize 22
