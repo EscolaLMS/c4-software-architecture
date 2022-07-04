@@ -213,7 +213,7 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
         }
 
         front = softwareSystem "Web App" "Wellms Front Course Access App" {
-            mobile_app = container "Native/Hybrid Mobile Application"
+            front_mobile_app = container "Native/Hybrid Mobile Application"
             front_web_app = container "Front Admin Panel" 
         }
 
@@ -224,13 +224,83 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
         admin_panel -> rest_api "Communicates"
         front -> rest_api "Communicates"
 
-        mobile_app -> rest_api "Communicates"
+        front_mobile_app -> rest_api "Communicates"
         front_web_app -> rest_api "Communicates"
 
         admin_web_app -> sdk_web "package json dependecy"
         front_web_app -> sdk_web "package json dependecy"
         front_web_app -> components "package json dependecy"
 
+        #backend_app -> database "Reads from and writes to" "Postgres Protocol/SSL"
+
+        #redis -> backend_app "Synchronize queue jobs"
+
+
+        deploymentEnvironment "Live" {
+            mobileLive = deploymentNode "Students's mobile device" "" "PWA, Hybrdm iOS or Android" {
+                liveMobileAppInstance = containerInstance front_mobile_app
+            }
+            webLive = deploymentNode "Students's computer" "" "Web Browser" {
+                liveSinglePageApplicationInstance = containerInstance front_web_app                
+            }
+
+            adminLive = deploymentNode "Tutor/Admin computer" "" "Web Browser" {
+                liveAdminSinglePageApplicationInstance = containerInstance admin_web_app                
+            }
+
+            deploymentNode "Backend" "" "Wellms autoscale backend" {
+
+                liveApi = deploymentNode "wellms-prod001" "" "" "" {
+                    softwareSystemInstance rest_api
+                }
+                
+                backendLive = deploymentNode "wellms-api***" "" "Ubuntu 16.04 LTS" ""  {
+                    backendLiveWeb = deploymentNode "Nginx" {
+                        liveBackendInstance = containerInstance backend_app
+                    }
+                    backendLiveQueue = deploymentNode "Supervisor Queue" "" "Laravel Horizon" {
+                        liveBackendQueueInstance = containerInstance backend_app
+                    }
+
+                    deploymentNode "Supervisor Scheduler" "" "Cron jobs" {
+                        liveBackendSchedulerInstance = containerInstance backend_app
+                    }
+                }
+               
+                deploymentNode "wellms-db01" "" "Ubuntu 16.04 LTS" {
+                    primaryDatabaseServer = deploymentNode "Postgres - Primary" "" "Postgres" {
+                        livePrimaryDatabaseInstance = containerInstance database
+                    }
+                }
+                deploymentNode "wellms-db02" "" "Ubuntu 16.04 LTS" "Failover" {
+                    secondaryDatabaseServer = deploymentNode "Postgres - Secondary" "" "Postgres" "Failover" {
+                        liveSecondaryDatabaseInstance = containerInstance database "Failover"
+                    }
+                }
+
+                redisLive = deploymentNode "Redis" {
+                    liveRedisInstance = containerInstance redis
+                }
+                
+
+                
+            }
+
+
+            redisLive -> backendLiveQueue
+
+            primaryDatabaseServer -> secondaryDatabaseServer "Replicates data to"
+
+            backendLive -> primaryDatabaseServer "Reads from and writes to" "Postgres Protocol/SSL"
+
+            mobileLive -> backendLiveWeb "Communicates with" "Wellms API"
+            webLive -> backendLiveWeb "Communicates with" "Wellms API"
+            adminLive -> backendLiveWeb "Communicates with" "Wellms API"
+
+            mobileLive -> liveApi "Communicates with" "Wellms API"
+            webLive -> liveApi "Communicates with" "Wellms API"
+            adminLive -> liveApi "Communicates with" "Wellms API"
+        }
    
 
     }
