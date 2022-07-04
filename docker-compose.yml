@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  structurizr:
+    image: structurizr/lite
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/usr/local/structurizr
+
+  structurizr-cli:
+    image: structurizr/cli
+    volumes:
+      - ./:/usr/local/structurizr
+    command: "push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json"
+
+
+
