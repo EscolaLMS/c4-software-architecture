@@ -1,4 +1,4 @@
-# 1. Open Source
+# 1. Going Open Source (MIT)
 
 Date: 2021-01-01
 
