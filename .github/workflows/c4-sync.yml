@@ -31,4 +31,4 @@ jobs:
         run: ls /usr/local/structurizr/
 
       - name: Publish to cloud
-        run: java" "-cp" "/usr/local/structurizr-cli:/usr/local/structurizr-cli/lib/*" "com.structurizr.cli.StructurizrCliApplication" push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
+        run: java -cp /usr/local/structurizr-cli:/usr/local/structurizr-cli/lib/* com.structurizr.cli.StructurizrCliApplication push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
