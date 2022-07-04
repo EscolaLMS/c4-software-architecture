@@ -1,15 +1,17 @@
 workspace {
+    name "Wellms World's First Headless LMS"
+    description "The software architecture of the Wellms as Distributed Monoliths"
 
     model {
-        student = person "Student/Client" "A user of my software system."
-        tutor = person "Tutor/Content Author" "A user of my software system."
-        admin = person "Admin" "A user of my software system."
+        student = person "Student/Client" "A user that interact with courses."
+        tutor = person "Tutor/Content Author" "A content creator and e-learnig tutor."
+        admin = person "Admin" "Administrator of the systems."
         
         rest_api = softwareSystem "REST API" {
             database = container "Database" "persistent database information (for example, users, payments, orders, courses, topics,  other metadata)"
             redis = container "Queue and cache" "queue and cache for data"
             noSql = container "logs" "logs for endpoints"
-            nodejs = container "Microservice" "microservice for endpoints logis" {
+            nodejs = container "Node Microservice" "microservice for endpoints logis" {
                 mjml = component "framework that makes responsive email easy"
             }
             ffmpeg = container "Video transcoder" "video transcoder"
@@ -235,8 +237,22 @@ workspace {
         
         styles {
             element "Person" {
+                color #ffffff
                 fontSize 22
                 shape Person
+                background #08427b
+            }
+            element "Software System" {
+                background #1168bd
+                color #ffffff
+            }
+            element "Container" {
+                background #438dd5
+                color #ffffff
+            }
+            element "Component" {
+                background #85bbf0
+                color #000000
             }
         }
     }
