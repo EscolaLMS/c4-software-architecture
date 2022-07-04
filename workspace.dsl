@@ -1,7 +1,10 @@
-workspace {
+workspace "Wellms World's First Headless LMS"  "The software architecture of the Wellms as Distributed Monolith" {
     name "Wellms World's First Headless LMS"
-    description "The software architecture of the Wellms as Distributed Monoliths"
+    description "The software architecture of the Wellms as Distributed Monolith"
 
+    !docs docs
+    !adrs adrs
+    
     model {
         student = person "Student/Client" "A user that interact with courses."
         tutor = person "Tutor/Content Author" "A content creator and e-learnig tutor."
@@ -228,7 +231,7 @@ workspace {
         front_web_app -> sdk_web "package json dependecy"
         front_web_app -> components "package json dependecy"
 
-        
+   
 
     }
 

@@ -1,5 +1,3 @@
 ## Context
 
-Here is a description of my software system...
-
-![](embed:SystemContext)
+Technical documentation is available at [https://docs.wellms.io/](https://docs.wellms.io/)
