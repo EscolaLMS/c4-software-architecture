@@ -1,0 +1,25 @@
+name: Publish models
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  phpunit-mysql:
+    runs-on: ubuntu-latest
+    env:
+      workspaceId: 75191
+      apiKey: ${{ secrets.apiKey }}
+      apiSecret: ${{ secrets.apiSecret }}
+
+    container:
+      image: structurizr/cli
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Publish to cloud
+        run: push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
