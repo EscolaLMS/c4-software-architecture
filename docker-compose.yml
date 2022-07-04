@@ -14,5 +14,11 @@ services:
       - ./:/usr/local/structurizr
     command: "push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json"
 
+  structurizr-export:
+    image: structurizr/cli
+    volumes:
+      - ./:/usr/local/structurizr
+    command: "export -workspace workspace.json -format mermaid"
+
 
 

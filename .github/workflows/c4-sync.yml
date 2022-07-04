@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  phpunit-mysql:
+  c4-publish:
     runs-on: ubuntu-latest
     env:
       workspaceId: 75191
@@ -20,6 +20,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+
+      - name: ls
+        run: ls
 
       - name: Publish to cloud
         run: push -id ${workspaceId} -key ${apiKey} -secret ${apiSecret} -w workspace.json
