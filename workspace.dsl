@@ -45,7 +45,6 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
                 images = component "Images" "Laravel Package" "Images. Responsive and compressions processing module"
                 invoices = component "Invoices" "Laravel Package" "Invoices generation."
                 jitsi = component "Jitsi" "Laravel Package" "Jitsi."
-                docker = component "Docker" "Laravel Package" "Docker Images."
                 lrs = component "Lrs" "Laravel Package" "LRS xAPI Learning Record Stores"
                 mailerlite = component "Mailerlite" "Laravel Package" "MailerLite. Customized group for LMS events"
                 mattermost = component "Mattermost" "Laravel Package" "Mattermost."
@@ -116,7 +115,6 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
                 images -> core "Core Dependecy"
                 invoices -> core "Core Dependecy"
                 jitsi -> core "Core Dependecy"
-                docker -> core "Core Dependecy"
                 lrs -> core "Core Dependecy"
                 mailerlite -> core "Core Dependecy"
                 mattermost -> core "Core Dependecy"
@@ -216,7 +214,12 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
 
         sdk = softwareSystem "SDK" "Wellms Software Development Kit" {
             sdk_web = container "SDK Web App" "React SDK" 
-            docker_images = container "Docker Images" "Docker Images"
+            docker_images = container "Docker Images" "Docker Images" {
+                docker_php = component "Image for development and running tests in continuous integration for Escola LMS Headless API."
+                docker_demo = component "Image for compliled demo in production."
+                docker_api = component "Image for compliled API in production with fixed composer packages versions."
+                docker_admin = component "Image for compiled Admin Panel in production"
+            }
             components = container "Components" "Components"
             fabric_js = container "Fabric JS" "Fabric JS"
             h5p_player = container "H5P Player" "H5P Player"
@@ -251,75 +254,85 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
         front_web_app -> sdk_web "package json dependecy"
         front_web_app -> components "package json dependecy"
 
-        #backend_app -> database "Reads from and writes to" "Postgres Protocol/SSL"
+        live = deploymentEnvironment "Live" {            
 
-        #redis -> backend_app "Synchronize queue jobs"
+            deploymentNode "Cloud" {
 
+                elb = infrastructureNode "Load Balancer/Reverse Proxy" "" "" ""
 
-        deploymentEnvironment "Live" {
-            mobileLive = deploymentNode "Students's mobile device" "" "PWA, Hybrdm iOS or Android" {
-                liveMobileAppInstance = containerInstance front_mobile_app
-            }
-            webLive = deploymentNode "Students's computer" "" "Web Browser" {
-                liveSinglePageApplicationInstance = containerInstance front_web_app                
-            }
+                deploymentNode "Static Files Server" "" "s3/cloudfront" {
 
-            adminLive = deploymentNode "Tutor/Admin computer" "" "Web Browser" {
-                liveAdminSinglePageApplicationInstance = containerInstance admin_web_app                
-            }
+                    mobileLive = deploymentNode "Students's mobile device" "" "PWA, Hybrid iOS or Android" {
+                        liveMobileAppInstance = containerInstance front_mobile_app
+                    }
+                    webLive = deploymentNode "Students's computer" "" "" "docker_demo" {
+                        liveSinglePageApplicationInstance = containerInstance front_web_app                
+                    }
 
-            deploymentNode "Backend" "" "Wellms autoscale backend" {
-
-                liveApi = deploymentNode "wellms-prod001" "" "" "" {
-                    softwareSystemInstance rest_api
+                    adminLive = deploymentNode "Tutor/Admin computer" "" "docker_admin" {
+                        liveAdminSinglePageApplicationInstance = containerInstance admin_web_app                
+                    }
                 }
+
+                deploymentNode "Backend" "" "Wellms autoscale backend" {
+
+                    liveApi = deploymentNode "wellms-prod001" "" "" "" {
+                        softwareSystemInstance rest_api
+                    }
+                    
+                    backendLive = deploymentNode "wellms-api***" "" "Ubuntu 16.04 LTS"   {
+                        backendLiveWeb = deploymentNode "Nginx" "docker_api" {
+                            liveBackendInstance = containerInstance backend_app
+                        }
+                        backendLiveQueue = deploymentNode "Supervisor Queue" "docker_api" "Laravel Horizon" {
+                            liveBackendQueueInstance = containerInstance backend_app
+                        }
+
+                        deploymentNode "Supervisor Scheduler" "docker_api" "Cron jobs" {
+                            liveBackendSchedulerInstance = containerInstance backend_app
+                        }
+                    }
                 
-                backendLive = deploymentNode "wellms-api***" "" "Ubuntu 16.04 LTS" ""  {
-                    backendLiveWeb = deploymentNode "Nginx" {
-                        liveBackendInstance = containerInstance backend_app
+                    deploymentNode "wellms-db01" "" "Ubuntu 16.04 LTS" {
+                        primaryDatabaseServer = deploymentNode "Postgres - Primary" "" "Postgres" {
+                            livePrimaryDatabaseInstance = containerInstance database
+                        }
                     }
-                    backendLiveQueue = deploymentNode "Supervisor Queue" "" "Laravel Horizon" {
-                        liveBackendQueueInstance = containerInstance backend_app
+                    deploymentNode "wellms-db02" "" "Ubuntu 16.04 LTS" "Failover" {
+                        secondaryDatabaseServer = deploymentNode "Postgres - Secondary" "" "Postgres" "Failover" {
+                            liveSecondaryDatabaseInstance = containerInstance database "Failover"
+                        }
                     }
 
-                    deploymentNode "Supervisor Scheduler" "" "Cron jobs" {
-                        liveBackendSchedulerInstance = containerInstance backend_app
+                    redisLive = deploymentNode "Redis" {
+                        liveRedisInstance = containerInstance redis
                     }
-                }
-               
-                deploymentNode "wellms-db01" "" "Ubuntu 16.04 LTS" {
-                    primaryDatabaseServer = deploymentNode "Postgres - Primary" "" "Postgres" {
-                        livePrimaryDatabaseInstance = containerInstance database
+
+                    storageLive = deploymentNode "Files Storage" "s3/cloudfront" {
+                        liveStorageInstance = containerInstance storage
                     }
-                }
-                deploymentNode "wellms-db02" "" "Ubuntu 16.04 LTS" "Failover" {
-                    secondaryDatabaseServer = deploymentNode "Postgres - Secondary" "" "Postgres" "Failover" {
-                        liveSecondaryDatabaseInstance = containerInstance database "Failover"
-                    }
+                    
+
+                    
                 }
 
-                redisLive = deploymentNode "Redis" {
-                    liveRedisInstance = containerInstance redis
-                }
-                
 
-                
+                redisLive -> backendLiveQueue
+
+                primaryDatabaseServer -> secondaryDatabaseServer "Replicates data to"
+
+                backendLive -> primaryDatabaseServer "Reads from and writes to" "Postgres Protocol/SSL"
+
+                mobileLive -> elb "Communicates with" "Wellms API"
+                webLive -> elb "Communicates with" "Wellms API"
+                adminLive -> elb "Communicates with" "Wellms API"
+
+                elb -> backendLiveWeb "Distrubite traffic"
+
+                // mobileLive -> liveApi "Communicates with" "Wellms API"
+                // webLive -> liveApi "Communicates with" "Wellms API"
+                // adminLive -> liveApi "Communicates with" "Wellms API"
             }
-
-
-            redisLive -> backendLiveQueue
-
-            primaryDatabaseServer -> secondaryDatabaseServer "Replicates data to"
-
-            backendLive -> primaryDatabaseServer "Reads from and writes to" "Postgres Protocol/SSL"
-
-            mobileLive -> backendLiveWeb "Communicates with" "Wellms API"
-            webLive -> backendLiveWeb "Communicates with" "Wellms API"
-            adminLive -> backendLiveWeb "Communicates with" "Wellms API"
-
-            mobileLive -> liveApi "Communicates with" "Wellms API"
-            webLive -> liveApi "Communicates with" "Wellms API"
-            adminLive -> liveApi "Communicates with" "Wellms API"
         }
    
 
@@ -384,6 +397,11 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
             include *
             autoLayout
 
+        }
+
+        deployment * "Live" "LiveDeployment" {
+            include *
+            autoLayout
         }
 
 
