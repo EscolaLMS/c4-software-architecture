@@ -12,17 +12,17 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
         
         rest_api = softwareSystem "REST API" {
             database = container "Database" "persistent database information (for example, users, payments, orders, courses, topics,  other metadata)"
-            redis = container "Queue and cache" "queue and cache for data"
-            noSql = container "logs" "logs for endpoints"
-            nodejs = container "Node Microservice" "microservice for endpoints logis" {
+            redis = container "Redis" "Queue and cache" "queue and cache for data"
+            noSql = container "noSQL" "logs" "logs for endpoints"
+            nodejs = container "Node.js Microservice" "microservice for endpoints logis" {
                 mjml = component "framework that makes responsive email easy"
             }
-            ffmpeg = container "Video transcoder" "video transcoder"
+            ffmpeg = container "ffmpeg" "Video transcoder" "video transcoder"
             
-            mail = container "Mailer" "mailer for sending emails"
-            storage = container "Storage" "storage for files"
+            mailer = container "Mailer" "mailer for sending emails", "Smtp or other service"
+            storage = container "Storage" "storage for files" "Either/both extental (like s3) and internal (local)"
             image_processing = container "Image processing optimizers" "JpegOptim, Optipng, Pngquant 2, SVGO 1, Gifsicle, cwebp"
-            trax = container "LRS" "learning record store"
+            trax = container "Trax LRS" "learning record store"
             payment_gateway = container "Payment gateway" "payment gateway" {
                 stripe = component "Stripe" "Stripe payments"
                 p24 = component "Przelewy24" "Przelewy24 payments"
@@ -146,11 +146,24 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
 
             }
 
-            images -> image_processing "use binary tools"
-            video -> ffmpeg "use binary tools"
+            images -> image_processing "use binary tools for image formating, resize and compression"
+            images -> storage "saves processed images"
+            image_processing -> storage "saves processed images"
+            video -> ffmpeg "use binary tools for video transcoding, resize and compression" 
             webinar -> youtube_api "publish on youtube"
             webinar -> jitsi "generate rooms thought API"
             consultations -> jitsi "generate one-to-one jitsi URLs"
+            redis -> nodejs "sends jobs for processing"
+            backend_app -> database "Reads from and writes to" "Postgres Protocol/SSL"
+
+            redis -> backend_app "Synchronize queue jobs"
+            backend_app -> nodejs "Calls async tasks"
+            backend_app -> noSql "Records user interaction in logs"
+            backend_app -> trax "xAPI Communication"
+            backend_app -> mailer "sends emails"
+
+            backend_app -> payment_gateway "validates payments"
+
         }
 
         
@@ -210,6 +223,10 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
             cli = container "Command Line Interface" "Command Line Interface"
             front_demo = container "Frontend Demo" "Frontend Demo availabe to be extends into bespoke web app"
 
+            front_demo -> components "Renders UI with"
+            front_demo -> sdk_web "Comunicates with backend API with"
+            front_demo -> fabric_js "Generates PDFs with"
+            front_demo -> h5p_player "Renders H5p with"
         }
 
         front = softwareSystem "Web App" "Wellms Front Course Access App" {
@@ -228,6 +245,9 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
         front_web_app -> rest_api "Communicates"
 
         admin_web_app -> sdk_web "package json dependecy"
+        admin_web_app -> h5p_player "package json dependecy"
+        admin_web_app -> fabric_js "edits templates and generates PDF previews"
+
         front_web_app -> sdk_web "package json dependecy"
         front_web_app -> components "package json dependecy"
 
@@ -306,7 +326,67 @@ workspace "Wellms World's First Headless LMS"  "The software architecture of the
     }
 
     views {
-               
+        systemLandscape {
+            include *
+            autoLayout
+            exclude sdk
+        }
+        systemContext rest_api "RestAPI" {
+            include *
+            autoLayout           
+        }    
+
+        systemContext admin_panel "AdminPanel" {
+            include *
+            autoLayout           
+        }    
+
+        systemContext front "FrontDemo" {
+            include *
+            autoLayout    
+            exclude sdk       
+        }   
+
+        systemContext sdk "SoftwareDeploymentKit" {
+            include *
+            autoLayout           
+        }     
+
+        container rest_api "RestApiContainers" {
+            include *
+            autoLayout
+
+        }
+
+        container sdk "SDKContainers" {
+            include *
+            autoLayout
+
+        }
+
+        container admin_panel "AdminPanelContainers" {
+            include *
+            autoLayout           
+        }    
+
+        component admin_web_app "AdminPanelComponents" {
+            include *
+            autoLayout           
+        }    
+
+        container front "FrontDemoContainers" {
+            include *
+            autoLayout    
+            exclude sdk       
+        }   
+
+        component backend_app "RestApiComponents" {
+            include *
+            autoLayout
+
+        }
+
+
         
         styles {
             element "Person" {
