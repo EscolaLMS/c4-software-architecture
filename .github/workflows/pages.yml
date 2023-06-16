@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 1
 
       - name: generate site
-        run: ls && generate-site -w workspace.dsl
+        run: /opt/structurizr-site-generatr/bin/structurizr-site-generatr generate-site -w workspace.dsl
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
