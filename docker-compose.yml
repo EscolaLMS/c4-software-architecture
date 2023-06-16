@@ -18,7 +18,12 @@ services:
     image: structurizr/cli
     volumes:
       - ./:/usr/local/structurizr
-    command: "export -workspace workspace.json -format mermaid"
+    command: "export -workspace workspace.json -format plantuml"
 
+  structurizr-genrate:
+    image: ghcr.io/avisi-cloud/structurizr-site-generatr
+    volumes:
+      - ./:/var/model
+    command: "generate-site -w workspace.dsl"
 
 

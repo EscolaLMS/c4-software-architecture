@@ -1,0 +1,27 @@
+name: Publish pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/avisi-cloud/structurizr-site-generatr
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: generate site
+        run: generate-site -w workspace.dsl
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/site # The folder the action should deploy.
