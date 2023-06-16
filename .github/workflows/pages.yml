@@ -11,6 +11,7 @@ jobs:
 
     container:
       image: ghcr.io/avisi-cloud/structurizr-site-generatr
+      options: --user root
 
     steps:
       - uses: actions/checkout@v2
