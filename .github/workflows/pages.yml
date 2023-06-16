@@ -21,7 +21,7 @@ jobs:
       - name: generate site
         run: /opt/structurizr-site-generatr/bin/structurizr-site-generatr generate-site -w workspace.dsl
 
-      - run: apt install git -y
+      - run: apt update && apt install git -y
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
