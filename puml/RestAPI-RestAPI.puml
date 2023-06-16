@@ -1,0 +1,20 @@
+@startuml
+set separator none
+title REST API - System Context
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+skinparam svgDimensionStyle false
+skinparam preserveAspectRatio meet
+System(AdminPanel, "Admin Panel", "Administration and course authoring panel", $tags="")[[../../admin-panel/context/]]
+System(WebApp, "Web App", "Wellms Front Course Access App", $tags="")[[../../web-app/context/]]
+System(RESTAPI, "REST API", "", $tags="")[[../container/]]
+
+Rel_D(AdminPanel, RESTAPI, "Communicates", $tags="")
+Rel_D(WebApp, RESTAPI, "Communicates", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+set separator none
+title Web App - Containers
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+System(RESTAPI, "REST API", "", $tags="")
+
+System_Boundary("WebApp_boundary", "Web App", $tags="") {
+  Container(WebApp.NativeHybridMobileApplication, "Native/Hybrid Mobile Application", "", $tags="")
+  Container(WebApp.FrontAdminPanel, "Front Admin Panel", "", $tags="")
+}
+
+Rel_D(WebApp.NativeHybridMobileApplication, RESTAPI, "Communicates", $tags="")
+Rel_D(WebApp.FrontAdminPanel, RESTAPI, "Communicates", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

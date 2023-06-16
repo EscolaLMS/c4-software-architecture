@@ -1,0 +1,39 @@
+@startuml
+set separator none
+title Admin Panel - Admin Web App - Components
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+skinparam svgDimensionStyle false
+skinparam preserveAspectRatio meet
+Container_Boundary("AdminPanel.AdminWebApp_boundary", "Admin Web App", $tags="") {
+  Component(AdminPanel.AdminWebApp.Users, "Users", "User management. Students, Tutors, Content Creators and Admins.", $tags="")
+  Component(AdminPanel.AdminWebApp.UserGroups, "User Groups", "User management. Creating of unlimited user groups to assign courses, webinars and other events access", $tags="")
+  Component(AdminPanel.AdminWebApp.Orders, "Orders", "List of orders and their details", $tags="")
+  Component(AdminPanel.AdminWebApp.Payments, "Payments", "List of orders and their details", $tags="")
+  Component(AdminPanel.AdminWebApp.Courses, "Courses", "Courses management. courses attributes management, program creation - content authoring, import / export, products details, certifications, tags & categories, Questionaries, Statistics, Users/User Group access", $tags="")
+  Component(AdminPanel.AdminWebApp.H5Ps, "H5Ps", "H5P Management. Upload Export Content authoring", $tags="")
+  Component(AdminPanel.AdminWebApp.SCORMs, "SCORMs", "SCORM packages management", $tags="")
+  Component(AdminPanel.AdminWebApp.Consultations, "Consultations", "One to one conversation management. Used to create jitsi meetings", $tags="")
+  Component(AdminPanel.AdminWebApp.StationaryEvents, "Stationary Events", "Manage stationary events.", $tags="")
+  Component(AdminPanel.AdminWebApp.Products, "Products", "Simple shop management , Product attributes, Pricing with Taxes, Creating single or bulk products, Promotions management, Users/User Group access, Product limitations", $tags="")
+  Component(AdminPanel.AdminWebApp.Webinars, "Webinars", "Live Video Stream Management.", $tags="")
+  Component(AdminPanel.AdminWebApp.Templates, "Templates", "Management of various templates in database and assigning them to Events so that content based on these templates is automatically generated and/or sent to users. Supported channels: email,  push, sms, pdf (certificates)", $tags="")
+  Component(AdminPanel.AdminWebApp.Files, "Files", "Files management. Reusable files.", $tags="")
+  Component(AdminPanel.AdminWebApp.Categories, "Categories", "General categories management.", $tags="")
+  Component(AdminPanel.AdminWebApp.Settings, "Settings.", "management of application config keys for each package, unlimited creation of bespoke variables (text, boolean, image, json, file) consumed by frontend", $tags="")
+  Component(AdminPanel.AdminWebApp.Roles, "Roles", "User roles and permissions (in admin panel)", $tags="")
+  Component(AdminPanel.AdminWebApp.Notifications, "Notifications", "List of currently logged admin notification (system events) Management of users notification (system events)", $tags="")
+  Component(AdminPanel.AdminWebApp.Questionnaires, "Questionnaires", "Management of Questionnaire that can be attached to courses. questions management, answer statistics", $tags="")
+  Component(AdminPanel.AdminWebApp.Vouchers, "Vouchers", "Definition of Coupons that can be applied to User Cart before placing an Order, calculating a discount depending on multiple different, configurable rules.", $tags="")
+  Component(AdminPanel.AdminWebApp.Reports, "Reports", "List of LMS reports Courses money spent metric, Courses popularity metric, Courses seconds spent metric, Tutors popularity metric", $tags="")
+  Component(AdminPanel.AdminWebApp.Logs, "Logs", "Audit Log. Tracking users API calls.", $tags="")
+}
+
+
+SHOW_LEGEND(true)
+@enduml

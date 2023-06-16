@@ -1,0 +1,43 @@
+@startuml
+set separator none
+title REST API - Containers
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+skinparam svgDimensionStyle false
+skinparam preserveAspectRatio meet
+System_Boundary("RESTAPI_boundary", "REST API", $tags="") {
+  Container(RESTAPI.ffmpeg, "ffmpeg", "video transcoder", "Video transcoder", $tags="")
+  Container(RESTAPI.Mailer, "Mailer", ",", "mailer for sending emails", $tags="")
+  Container(RESTAPI.Storage, "Storage", "Either/both extental (like s3) and internal (local)", "storage for files", $tags="")
+  Container(RESTAPI.Imageprocessingoptimizers, "Image processing optimizers", "JpegOptim, Optipng, Pngquant 2, SVGO 1, Gifsicle, cwebp", $tags="")
+  Container(RESTAPI.TraxLRS, "Trax LRS", "learning record store", $tags="")
+  Container(RESTAPI.Paymentgateway, "Payment gateway", "payment gateway", $tags="")[[../component/]]
+  Container(RESTAPI.YoutubeAPI, "Youtube API", "youtube API", $tags="")
+  Container(RESTAPI.APIApplication, "API Application", "Laravel MVC", "Provides All LMS functionality headlessly via a JSON/HTTPS REST API.", $tags="")[[../component/]]
+  Container(RESTAPI.Database, "Database", "persistent database information (for example, users, payments, orders, courses, topics,  other metadata)", $tags="")
+  Container(RESTAPI.Redis, "Redis", "queue and cache for data", "Queue and cache", $tags="")
+  Container(RESTAPI.noSQL, "noSQL", "logs for endpoints", "logs", $tags="")
+  Container(RESTAPI.NodejsMicroservice, "Node.js Microservice", "microservice for endpoints logis", $tags="")[[../component/]]
+}
+
+Rel_D(RESTAPI.APIApplication, RESTAPI.Imageprocessingoptimizers, "use binary tools for image formating, resize and compression", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.Storage, "saves processed images", $tags="")
+Rel_D(RESTAPI.Imageprocessingoptimizers, RESTAPI.Storage, "saves processed images", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.ffmpeg, "use binary tools for video transcoding, resize and compression", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.YoutubeAPI, "publish on youtube", $tags="")
+Rel_D(RESTAPI.Redis, RESTAPI.NodejsMicroservice, "sends jobs for processing", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.Database, "Reads from and writes to", "Postgres Protocol/SSL", $tags="")
+Rel_D(RESTAPI.Redis, RESTAPI.APIApplication, "Synchronize queue jobs", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.NodejsMicroservice, "Calls async tasks", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.noSQL, "Records user interaction in logs", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.TraxLRS, "xAPI Communication", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.Mailer, "sends emails", $tags="")
+Rel_D(RESTAPI.APIApplication, RESTAPI.Paymentgateway, "validates payments", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

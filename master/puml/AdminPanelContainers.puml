@@ -1,0 +1,20 @@
+@startuml
+set separator none
+title Admin Panel - Containers
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+System(SDK, "SDK", "Wellms Software Development Kit", $tags="")
+
+System_Boundary("AdminPanel_boundary", "Admin Panel", $tags="") {
+  Container(AdminPanel.AdminWebApp, "Admin Web App", "React Admin Panel", $tags="")
+}
+
+Rel_D(AdminPanel.AdminWebApp, SDK, "package json dependecy", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

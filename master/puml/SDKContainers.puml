@@ -1,0 +1,35 @@
+@startuml
+set separator none
+title SDK - Containers
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+System(WebApp, "Web App", "Wellms Front Course Access App", $tags="")
+System(AdminPanel, "Admin Panel", "Administration and course authoring panel", $tags="")
+
+System_Boundary("SDK_boundary", "SDK", $tags="") {
+  Container(SDK.SDKWebApp, "SDK Web App", "React SDK", $tags="")
+  Container(SDK.DockerImages, "Docker Images", "Docker Images", $tags="")
+  Container(SDK.Components, "Components", "Components", $tags="")
+  Container(SDK.FabricJS, "Fabric JS", "Fabric JS", $tags="")
+  Container(SDK.H5PPlayer, "H5P Player", "H5P Player", $tags="")
+  Container(SDK.CommandLineInterface, "Command Line Interface", "Command Line Interface", $tags="")
+  Container(SDK.FrontendDemo, "Frontend Demo", "Frontend Demo availabe to be extends into bespoke web app", $tags="")
+}
+
+Rel_D(SDK.FrontendDemo, SDK.Components, "Renders UI with", $tags="")
+Rel_D(SDK.FrontendDemo, SDK.SDKWebApp, "Comunicates with backend API with", $tags="")
+Rel_D(SDK.FrontendDemo, SDK.FabricJS, "Generates PDFs with", $tags="")
+Rel_D(SDK.FrontendDemo, SDK.H5PPlayer, "Renders H5p with", $tags="")
+Rel_D(AdminPanel, SDK.SDKWebApp, "package json dependecy", $tags="")
+Rel_D(AdminPanel, SDK.H5PPlayer, "package json dependecy", $tags="")
+Rel_D(AdminPanel, SDK.FabricJS, "edits templates and generates PDF previews", $tags="")
+Rel_D(WebApp, SDK.SDKWebApp, "package json dependecy", $tags="")
+Rel_D(WebApp, SDK.Components, "package json dependecy", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+set separator none
+title System Landscape
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+Person(StudentClient, "Student/Client", "A user that interact with courses.", $tags="")
+System(AdminPanel, "Admin Panel", "Administration and course authoring panel", $tags="")
+System(WebApp, "Web App", "Wellms Front Course Access App", $tags="")
+Person(TutorContentAuthor, "Tutor/Content Author", "A content creator and e-learnig tutor.", $tags="")
+Person(Admin, "Admin", "Administrator of the systems.", $tags="")
+System(RESTAPI, "REST API", "", $tags="")
+
+Rel_D(StudentClient, WebApp, "Access courses", $tags="")
+Rel_D(Admin, AdminPanel, "Administer", $tags="")
+Rel_D(TutorContentAuthor, AdminPanel, "Manage courses", $tags="")
+Rel_D(TutorContentAuthor, WebApp, "Communicates with students", $tags="")
+Rel_D(AdminPanel, RESTAPI, "Communicates", $tags="")
+Rel_D(WebApp, RESTAPI, "Communicates", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

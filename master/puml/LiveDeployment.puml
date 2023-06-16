@@ -1,0 +1,45 @@
+@startuml
+set separator none
+title Deployment - Live
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Deployment>
+
+Deployment_Node(Live.Cloud, "Cloud", $tags="") {
+  Deployment_Node(Live.Cloud.LoadBalancerReverseProxy, "Load Balancer/Reverse Proxy", $descr="", $tags="")
+  Deployment_Node(Live.Cloud.StaticFilesServer, "Static Files Server", "s3/cloudfront", $tags="") {
+    Deployment_Node(Live.Cloud.StaticFilesServer.Studentssmobiledevice, "Students's mobile device", "PWA, Hybrid iOS or Android", $tags="") {
+      Container(Live.Cloud.StaticFilesServer.Studentssmobiledevice.NativeHybridMobileApplication_1, "Native/Hybrid Mobile Application", "", $tags="")
+    }
+
+    Deployment_Node(Live.Cloud.StaticFilesServer.Studentsscomputer, "Students's computer", $tags="") {
+      Container(Live.Cloud.StaticFilesServer.Studentsscomputer.FrontAdminPanel_1, "Front Admin Panel", "", $tags="")
+    }
+
+    Deployment_Node(Live.Cloud.StaticFilesServer.TutorAdmincomputer, "Tutor/Admin computer", "docker_admin", $tags="") {
+      Container(Live.Cloud.StaticFilesServer.TutorAdmincomputer.AdminWebApp_1, "Admin Web App", "React Admin Panel", $tags="")
+    }
+
+  }
+
+  Deployment_Node(Live.Cloud.Backend, "Backend", "Wellms autoscale backend", $tags="") {
+    Deployment_Node(Live.Cloud.Backend.wellmsprod001, "wellms-prod001", $tags="") {
+      System(Live.Cloud.Backend.wellmsprod001.RESTAPI_1, "REST API", "", $tags="")
+    }
+
+  }
+
+}
+
+Rel_D(Live.Cloud.StaticFilesServer.Studentsscomputer.FrontAdminPanel_1, Live.Cloud.Backend.wellmsprod001.RESTAPI_1, "Communicates", $tags="")
+Rel_D(Live.Cloud.StaticFilesServer.Studentssmobiledevice.NativeHybridMobileApplication_1, Live.Cloud.Backend.wellmsprod001.RESTAPI_1, "Communicates", $tags="")
+Rel_D(Live.Cloud.StaticFilesServer.Studentssmobiledevice, Live.Cloud.LoadBalancerReverseProxy, "Communicates with", "Wellms API", $tags="")
+Rel_D(Live.Cloud.StaticFilesServer.Studentsscomputer, Live.Cloud.LoadBalancerReverseProxy, "Communicates with", "Wellms API", $tags="")
+Rel_D(Live.Cloud.StaticFilesServer.TutorAdmincomputer, Live.Cloud.LoadBalancerReverseProxy, "Communicates with", "Wellms API", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

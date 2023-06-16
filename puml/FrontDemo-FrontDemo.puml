@@ -1,0 +1,22 @@
+@startuml
+set separator none
+title Web App - System Context
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+skinparam svgDimensionStyle false
+skinparam preserveAspectRatio meet
+Person(StudentClient, "Student/Client", "A user that interact with courses.", $tags="")
+System(WebApp, "Web App", "Wellms Front Course Access App", $tags="")[[../container/]]
+Person(TutorContentAuthor, "Tutor/Content Author", "A content creator and e-learnig tutor.", $tags="")
+System(RESTAPI, "REST API", "", $tags="")[[../../rest-api/context/]]
+
+Rel_D(StudentClient, WebApp, "Access courses", $tags="")
+Rel_D(TutorContentAuthor, WebApp, "Communicates with students", $tags="")
+Rel_D(WebApp, RESTAPI, "Communicates", $tags="")
+
+SHOW_LEGEND(true)
+@enduml

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" class="has-background-light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web App | Wellms World's First Headless LMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../style.css" rel="stylesheet">
+    <link href="./../../style-branding.css" rel="stylesheet">
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Wellms World's First Headless LMS</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded has-site-branding" id="search" type="search" size="30" maxlength="50" placeholder="Search (requires 3 characters)..." onkeyup="redirect(event, value, '../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../master" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="">Home</a><a href="../../decisions/" class="">Decisions</a><a href="../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../admin-panel/" class="">Admin Panel</a><a href="../../rest-api/" class="">REST API</a><a href="../../sdk/" class="">SDK</a><a href="../" class="is-active">Web App</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid has-background-white">
+        <h1 class="title mt-3">Web App</h1>
+        <h2 class="subtitle">Wellms Front Course Access App</h2>
+        <div class="tabs mt-3">
+          <ul>
+            <li><a href="../" class="">Info</a></li>
+            <li><a href="../context/" class="">Context views</a></li>
+            <li class="is-active"><a href="./" class="is-active">Container views</a></li>
+            <li><a href="../dependencies/" class="">Dependencies</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <figure style="width: min(100%, 464px);">
+            <div><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" preserveAspectRatio="meet" version="1.1" viewBox="0 0 464 384" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="173" x="138.5" y="22.9951">Web App - Containers</text><!--cluster WebApp_boundary--><g id="cluster_WebApp_boundary"><rect fill="none" height="124" rx="2.5" ry="2.5" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="451" x="7" y="44.2969"/><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="80" x="192.5" y="61.1484">Web App</text><text fill="#444444" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="62" x="201.5" y="76.0605">[System]</text></g><!--entity WebApp.NativeHybridMobileApplication--><g id="elem_WebApp.NativeHybridMobileApplication"><rect fill="#438DD5" height="57.25" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="201" x="23.5" y="95.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="118" x="33.5" y="120.1484">Native/Hybrid</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="6" x="151.5" y="120.1484">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57" x="157.5" y="120.1484">Mobile</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="96" x="76" y="138.7734">Application</text></g><!--entity WebApp.FrontAdminPanel--><g id="elem_WebApp.FrontAdminPanel"><rect fill="#438DD5" height="38.625" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="182" x="260" y="104.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="48" x="270" y="129.1484">Front</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="6" x="318" y="129.1484">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="54" x="324" y="129.1484">Admin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="6" x="378" y="129.1484">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="48" x="384" y="129.1484">Panel</text></g><!--entity RESTAPI--><g id="elem_RESTAPI"><a href="../../rest-api/context/" target="_top" title="../../rest-api/context/" xlink:actuate="onRequest" xlink:href="../../rest-api/context/" xlink:show="new" xlink:title="../../rest-api/context/" xlink:type="simple"><rect fill="#1168BD" height="38.625" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="100" x="187" y="229.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="44" x="197" y="254.1484">REST</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="6" x="241" y="254.1484">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="30" x="247" y="254.1484">API</text></a></g><!--link WebApp.NativeHybridMobileApplication to RESTAPI--><g id="link_WebApp.NativeHybridMobileApplication_RESTAPI"><path d="M143.51,152.3369 C154.26,166.8369 168.19,184.6069 182,199.2969 C189.93,207.7269 199.17,216.2869 207.78,223.8269 " fill="none" id="WebApp.NativeHybridMobileApplication-to-RESTAPI" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="213.91,229.1169,209.8043,221.624,205.8898,226.1712,213.91,229.1169" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="103" x="183" y="196.4355">Communicates</text></g><!--link WebApp.FrontAdminPanel to RESTAPI--><g id="link_WebApp.FrontAdminPanel_RESTAPI"><path d="M337.24,143.5469 C325.55,159.0469 308.02,181.3369 291,199.2969 C283.13,207.6069 274.04,216.1269 265.59,223.6569 " fill="none" id="WebApp.FrontAdminPanel-to-RESTAPI" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="259.29,229.2069,267.2795,226.1791,263.3187,221.6723,259.29,229.2069" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="103" x="304" y="196.4355">Communicates</text></g><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1.0;" width="190" x="243" y="291.9219"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="59" x="243" y="304.917">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="302" y="304.917">&#160;</text><rect fill="#1168BD" height="16.2969" style="stroke:none;stroke-width:1.0;" width="190" x="243" y="308.2188"/><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="8" x="247" y="321.2139">&#9647;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="255" y="321.2139">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="263" y="321.2139">system</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="317" y="321.2139">&#160;</text><rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1.0;" width="190" x="243" y="324.5156"/><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="8" x="247" y="337.5107">&#9647;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="255" y="337.5107">&#160;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="65" x="263" y="337.5107">container</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="332" y="337.5107">&#160;</text><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1.0;" width="190" x="243" y="340.8125"/><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="8" x="247" y="353.8076">&#9647;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="255" y="353.8076">&#160;</text><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="119" x="263" y="353.8076">system boundary</text><text fill="#444444" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="43" x="386" y="354.751">(dashed)</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="429" y="353.8076">&#160;</text><line style="stroke:none;stroke-width:1.0;" x1="243" x2="433" y1="291.9219" y2="291.9219"/><line style="stroke:none;stroke-width:1.0;" x1="243" x2="433" y1="308.2188" y2="308.2188"/><line style="stroke:none;stroke-width:1.0;" x1="243" x2="433" y1="324.5156" y2="324.5156"/><line style="stroke:none;stroke-width:1.0;" x1="243" x2="433" y1="340.8125" y2="340.8125"/><line style="stroke:none;stroke-width:1.0;" x1="243" x2="433" y1="357.1094" y2="357.1094"/><line style="stroke:none;stroke-width:1.0;" x1="243" x2="243" y1="291.9219" y2="357.1094"/><line style="stroke:none;stroke-width:1.0;" x1="433" x2="433" y1="291.9219" y2="357.1094"/></g></svg></div>
+            <figcaption>Web App - Containers [<a href="../../svg/FrontDemoContainers.svg">svg</a>|<a href="../../png/FrontDemoContainers.png">png</a>|<a href="../../puml/FrontDemoContainers.puml">puml</a>]</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
