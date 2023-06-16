@@ -1,3 +1,3 @@
 # Wellms C4 model
 
-Cloud version https://structurizr.com/share/75191
+[https://escolalms.github.io/c4-software-architecture](https://escolalms.github.io/c4-software-architecture/master)
